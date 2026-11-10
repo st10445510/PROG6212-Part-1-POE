@@ -1,0 +1,56 @@
+﻿@model List<RaceDay.MVC.ViewModels.CategoryViewModel>
+
+@{
+    ViewData["Title"] = "Available Categories";
+}
+
+<div class="container mt-4">
+    <h2>Available Race Categories</h2>
+    <p>Choose a category and enrol in an upcoming event.</p>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">No categories are currently available.</div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var category in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5>@category.CategoryName</h5>
+                            <p><strong>Distance:</strong> @category.Distance km</p>
+                            <p><strong>Entry Fee:</strong> R @category.EntryFee</p>
+                            <p><strong>Maximum Participants:</strong> @category.MaximumParticipants</p>
+
+                            <form asp-action="Enrol" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="categoryId" value="@category.CategoryId" />
+                                <button type="submit" class="btn btn-dark w-100">
+                                    Enrol Now
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

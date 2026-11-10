@@ -1,0 +1,63 @@
+﻿@model List<System.Text.Json.JsonElement>
+
+@{
+    ViewData["Title"] = "Race Results";
+}
+
+<div class="container mt-4">
+    <h2>Race Results</h2>
+    <p>View published participant results.</p>
+
+    <a asp-action="CreateResult" class="btn btn-primary mb-3">
+        Publish New Result
+    </a>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info">No results available yet.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Result ID</th>
+                    <th>Enrolment ID</th>
+                    <th>Finish Time</th>
+                    <th>Finishing Position</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var result in Model)
+                {
+                    <tr>
+                        <td>@result.GetProperty("resultId").GetInt32()</td>
+                        <td>@result.GetProperty("enrolmentId").GetInt32()</td>
+                        <td>@result.GetProperty("finishTime").ToString()</td>
+                        <td>
+                            @if (result.GetProperty("finishingPosition").ValueKind
+                                                != System.Text.Json.JsonValueKind.Null)
+                            {
+                                @result.GetProperty("finishingPosition").GetInt32()
+                            }
+                            else
+                            {
+                                <span>Not recorded</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

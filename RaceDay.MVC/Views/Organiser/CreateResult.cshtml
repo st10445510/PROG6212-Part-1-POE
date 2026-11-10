@@ -1,0 +1,56 @@
+﻿@model RaceDay.MVC.ViewModels.ResultViewModel
+
+@{
+    ViewData["Title"] = "Publish Race Result";
+}
+
+<div class="container mt-4">
+    <h2>Publish Race Result</h2>
+    <p>Enter the participant's finishing details below.</p>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <form asp-action="CreateResult" method="post">
+        <div class="mb-3">
+            <label asp-for="EnrolmentId" class="form-label">
+                Enrolment ID
+            </label>
+            <input asp-for="EnrolmentId" class="form-control" />
+            <span asp-validation-for="EnrolmentId"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="FinishTime" class="form-label">
+                Finish Time
+            </label>
+            <input asp-for="FinishTime" type="time"
+                   class="form-control" step="1" />
+            <span asp-validation-for="FinishTime"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="FinishingPosition" class="form-label">
+                Finishing Position
+            </label>
+            <input asp-for="FinishingPosition" type="number"
+                   min="1" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Publish Result
+        </button>
+
+        <a asp-action="Results" class="btn btn-secondary">
+            Cancel
+        </a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
